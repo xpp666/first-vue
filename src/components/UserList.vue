@@ -13,7 +13,7 @@
       <model v-if="show" v-bind:userInfoStr="userInfoStr" style="display:inline">
         <div>
           <span>用户名:</span>
-          <input v-model="userInfo.Name" disabled>
+          <input v-model="userInfo.Name">
         </div>
         <div>
           <span>电话:</span>
@@ -70,16 +70,18 @@
             });
           },
         save:function () {
-          console.log(this.userInfo);
+          this.show = false
           this.$http.put("/api/user/update", this.userInfo)
-            .then(() => {
-              this.$router.go(0)
+            .then((d) => {
+              let l = d.body.data
+              this.userList.splice(0,this.userList.length,...l);
             })
         },
         delUser:function (id) {
           this.$http.delete("/api/user/delete/" + id)
-            .then(() => {
-              this.list();
+            .then((d) => {
+              let l = d.body.data
+              this.userList.splice(0,this.userList.length,...l);
             })
         }
       }
